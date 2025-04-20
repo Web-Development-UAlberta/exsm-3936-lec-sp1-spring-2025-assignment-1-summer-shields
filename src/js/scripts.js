@@ -15,7 +15,7 @@ async function main() {
     }
 
     set cylinderCount(value) {
-      if (!value || typeof value !== "number") {
+      if (typeof value !== "number") {
         output("Invalid cylinder count");
       }
       else {
@@ -24,8 +24,8 @@ async function main() {
     }
 
     set isRunning(value) {
-      if (!value || typeof value !== "boolean") {
-        output("Invalid entry");
+      if (typeof value !== "boolean") {
+        output("Invalid entry. Car status can be set to running (true) or not running (false)");
       }
       else {
         this._isRunning = value;    
@@ -33,11 +33,11 @@ async function main() {
     }
 
     start() {
-      this.running = true;
+      this.isRunning = true;
     }
 
     stop() {
-      this.running = false;
+      this.isRunning = false;
     }
   }
   
@@ -51,7 +51,7 @@ async function main() {
       this.engine = engine;
     }
 
-    //getters and setters
+    //Getters and setters
     get make() {
       return this._make;
     }
@@ -69,7 +69,7 @@ async function main() {
     }
     
     set make(value) {
-      if (!value || typeof value !== "string") {
+      if (typeof value !== "string") {
         output("Invalid make provided. Defaulting to 'Generic'.");
         this._make = "Generic";
       }
@@ -79,7 +79,7 @@ async function main() {
     }
 
     set model(value) {
-      if (!value || typeof value !== "string") {
+      if (typeof value !== "string") {
         output("Invalid model provided. Defaulting to 'Generic'.");
         this._model = "Generic";
       }
@@ -89,7 +89,7 @@ async function main() {
     }
 
     set year(value) {
-      if (!value || typeof value !== "number" || value < 1900 || value > 2026) {
+      if (typeof value !== "number" || value < 1900 || value > 2026) {
         output("Invalid year provided. Defaulting to 'Unknown'.");
       }
       else {
@@ -98,7 +98,7 @@ async function main() {
     }
 
     set odometer(value) {
-      if (!value || typeof value !== "number" || value < 0) {
+      if (typeof value !== "number" || value < 0) {
         output("Invalid odometer value provided.");
       }
       else {
@@ -106,23 +106,25 @@ async function main() {
       }
     }
 
-    //method 1 
+    //Method 1 
     startEngine() {
       this.engine.start();
       output("Engine turned on.");
     }
 
-    //method 2
+    //Method 2
     stopEngine() {
       this.engine.stop();
       output("Engine turned off.")
     }
 
-    //method 3
+    //Method 3
     drive(int) {
-      //let distance = int;
       if (int < 0 || typeof int !== "number") {
         output("Invalid value for distance driven.");
+      }
+      else if (!this.engine.isRunning) {
+        output("Engine is not running. Please turn on the engine to drive.");
       }
       else {
         this.odometer = this.odometer + int;
@@ -134,6 +136,16 @@ async function main() {
   //Instantiate
   let myEngine = new Engine(4);
   
+  let myCar = new Car("Ford", "Bronco", 2023, 0, myEngine);
+  myCar.startEngine();
+  myCar.drive(100);
+  myCar.stopEngine();
+  myCar.startEngine();
+  myCar.drive(50);
+  myCar.stopEngine();
+  output(`Total distance driven: ${myCar.odometer}km`);
 
   //JSON
+  JSONcar = JSON.stringify(myCar);
+  output(JSONcar);
 }
