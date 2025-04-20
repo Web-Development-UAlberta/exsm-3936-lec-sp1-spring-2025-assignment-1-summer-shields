@@ -1,12 +1,54 @@
 async function main() {
+  //Engine class
+  class Engine {
+    constructor(cylinderCount) {
+      this.cylinderCount = cylinderCount;
+      this.isRunning = false;
+    }
+
+    get cylinderCount() {
+      return this._cylinderCount;
+    }
+
+    get isRunning() {
+      return this._isRunning;
+    }
+
+    set cylinderCount(value) {
+      if (!value || typeof value !== "number") {
+        output("Invalid cylinder count");
+      }
+      else {
+        this._cylinderCount = value;
+      }
+    }
+
+    set isRunning(value) {
+      if (!value || typeof value !== "boolean") {
+        output("Invalid entry");
+      }
+      else {
+        this._isRunning = value;    
+      }
+    }
+
+    start() {
+      this.running = true;
+    }
+
+    stop() {
+      this.running = false;
+    }
+  }
+  
   //Car class, parameters (make, model, and year), properties (make, model, year, odometer, and engine)
   class Car {
-    constructor(make, model, year) {
+    constructor(make, model, year, odometer, engine) {
       this.make = make || "Generic";
       this.model = model || "Generic";
       this.year = year || "Unknown";
-      this.odometer = 0;
-      this.engine = false;
+      this.odometer = odometer;
+      this.engine = engine;
     }
 
     //getters and setters
@@ -56,7 +98,7 @@ async function main() {
     }
 
     set odometer(value) {
-      if (!value || typeof value !== "number") {
+      if (!value || typeof value !== "number" || value < 0) {
         output("Invalid odometer value provided.");
       }
       else {
@@ -66,30 +108,32 @@ async function main() {
 
     //method 1 
     startEngine() {
-      engine = true;
+      this.engine.start();
+      output("Engine turned on.");
     }
 
     //method 2
     stopEngine() {
-      engine = false;
+      this.engine.stop();
+      output("Engine turned off.")
     }
 
     //method 3
     drive(int) {
-
+      //let distance = int;
+      if (int < 0 || typeof int !== "number") {
+        output("Invalid value for distance driven.");
+      }
+      else {
+        this.odometer = this.odometer + int;
+        output(`Drove ${int} km.`)
+      }
     }
   }
-
-  class Engine {
-    constructor() {
-      this.cylinderCount = 0;
-      this.isRunning = false;
-    }
-  }
-  
 
   //Instantiate
-  let myEngine = new Engine()
+  let myEngine = new Engine(4);
+  
 
   //JSON
 }
