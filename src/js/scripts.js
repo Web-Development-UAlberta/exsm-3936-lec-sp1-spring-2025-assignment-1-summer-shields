@@ -6,6 +6,7 @@ async function main() {
       this.isRunning = false;
     }
 
+    //Getters and Setters for properties in Engine class
     get cylinderCount() {
       return this._cylinderCount;
     }
@@ -32,10 +33,12 @@ async function main() {
       }
     }
 
+    //Mehtod to allow Car class to call upon for start
     start() {
       this.isRunning = true;
     }
 
+    //Mehtod to allow Car class to call upon for stop
     stop() {
       this.isRunning = false;
     }
@@ -48,6 +51,7 @@ async function main() {
       this.gearCount = gearCount || "Park";
     }
 
+    //Mehtod for transmission class so Car class can call upon the set gear
     setGear(newGear) {
       newGear = String(newGear);
       if (this.manualAutomatic == "Automatic") {
@@ -66,7 +70,7 @@ async function main() {
     } 
   }
   
-  //Car class, parameters (make, model, and year), properties (make, model, year, odometer, and engine)
+  //Car class, parameters (make, model, year, odometer, engine, and transmission), properties (make, model, year, odometer, and engine)
   class Car {
     constructor(make, model, year, odometer, engine, transmission) {
       this.make = make || "Generic";
@@ -77,7 +81,7 @@ async function main() {
       this.transmission = transmission;
     }
 
-    //Getters and setters
+    //Getters and setters for Car class properties
     get make() {
       return this._make;
     }
@@ -132,7 +136,7 @@ async function main() {
       }
     }
 
-    //Method 1 
+    //Method 1: Start engine
     startEngine() {
       const gear = this.transmission.gearCount;
       const isManual = this.transmission.manualAutomatic == "Manual";
@@ -151,7 +155,7 @@ async function main() {
       }
     }
 
-    //Method 2
+    //Method 2: Stop engine
     stopEngine() {
       if (!this.engine.isRunning) {
         output("The car is already tured off.");
@@ -162,7 +166,7 @@ async function main() {
       }
     }
 
-    //Method 3
+    //Method 3: Drive (int = distance driven)
     drive(int) {
       if (int < 0 || typeof int !== "number") {
         output("Invalid value for distance driven.");
@@ -187,14 +191,13 @@ async function main() {
       }
     }
 
-    //Shift method
+    //Shift method: for use in transmission purposes
     shift(gear) {
       this.transmission.setGear(gear);
       output(`Gear set to ${gear}`);
     }
   }
   
-
   //Instantiate
   let myEngine = new Engine(4);
 
